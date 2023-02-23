@@ -223,14 +223,27 @@ public class ChessGameEngine{
         {
             return 2;
         }
-        if ( ( !king1.isChecked( board ) && !playerHasLegalMoves( 1 ) )
-            || ( !king2.isChecked( board ) && !playerHasLegalMoves( 2 ) )
-            || ( board.getAllWhitePieces().size() == 1 &&
-                board.getAllBlackPieces().size() == 1 ) ) // stalemate
-        {
+
+        boolean isStalemate = ( !king1.isChecked( board ) && !playerHasLegalMoves( 1 ) )
+                || ( !king2.isChecked( board ) && !playerHasLegalMoves( 2 ) )
+                || ( board.getAllWhitePieces().size() == 1 &&
+                board.getAllBlackPieces().size() == 1 );
+
+
+        if (isStalemate){
             return -1;
         }
-        return 0; // game is still in play
+
+        return 0;
+
+        //if ( ( !king1.isChecked( board ) && !playerHasLegalMoves( 1 ) )
+            //|| ( !king2.isChecked( board ) && !playerHasLegalMoves( 2 ) )
+            //|| ( board.getAllWhitePieces().size() == 1 &&
+                //board.getAllBlackPieces().size() == 1 ) ) // stalemate
+        //{
+            //return -1;
+        //}
+        //return 0; // game is still in play
     }
     // ----------------------------------------------------------
     /**
