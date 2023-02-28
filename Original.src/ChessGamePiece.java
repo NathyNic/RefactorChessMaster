@@ -688,71 +688,96 @@ public abstract class ChessGamePiece{
      *            the board to check
      * @return true if it is an enemy piece, false if not
      */
-    public boolean isEnemy( ChessGameBoard board, int row, int col ){
-        if ( row > 7 || col > 7 || row < 0 || col < 0 ){
+
+    public boolean isEnemy(ChessGameBoard board, int row, int col) {
+        if (row > 7 || col > 7 || row < 0 || col < 0) {
             return false;
         }
-        ChessGamePiece enemyPiece = getEnemyPiece(board, row, col);
-            //board.getCell( row, col ).getPieceOnSquare() == null
-                //? null
-                //: board.getCell( row, col ).getPieceOnSquare();
-        if (enemyPiece == null || getColorOfPiece() == ChessGamePiece.UNASSIGNED
-                || enemyPiece.getColorOfPiece() == ChessGamePiece.UNASSIGNED
-                || getColorOfPiece() == enemyPiece.getColorOfPiece()) {
+        ChessGamePiece enemyPiece =
+                board.getCell(row, col).getPieceOnSquare() == null
+                        ? null
+                        : board.getCell(row, col).getPieceOnSquare();
+        if (enemyPiece == null || this.getColorOfPiece() == ChessGamePiece.UNASSIGNED
+                || enemyPiece.getColorOfPiece() == ChessGamePiece.UNASSIGNED) {
             return false;
         }
+        EnemyPieceChecker enemyPieceChecker;
+        if (this.getColorOfPiece() == ChessGamePiece.WHITE) {
+            enemyPieceChecker = new WhiteEnemyPieceChecker();
+        } else {
+            enemyPieceChecker = new BlackEnemyPieceChecker();
+        }
+        return enemyPieceChecker.isEnemy(this, enemyPiece);
 
-        return true;
 
-
-        //if ( enemyPiece == null
+            //if ( enemyPiece == null
             //|| this.getColorOfPiece() == ChessGamePiece.UNASSIGNED
             //|| enemyPiece.getColorOfPiece() == ChessGamePiece.UNASSIGNED ){
             //return false;
-        //}
-        //if ( this.getColorOfPiece() == ChessGamePiece.WHITE ){
+            //}
+            //if ( this.getColorOfPiece() == ChessGamePiece.WHITE ){
             //if ( enemyPiece.getColorOfPiece() == ChessGamePiece.BLACK ){
-                //return true;
+            //return true;
             //}
             //else
             //{
-                //return false;
+            //return false;
             //}
-        //}
-        //else
-        //{
+            //}
+            //else
+            //{
             //if ( enemyPiece.getColorOfPiece() == ChessGamePiece.WHITE ){
-                //return true;
+            //return true;
             //}
             //else
             //{
-                //return false;
+            //return false;
             //}
+            //}
+        }
+
+        //protected abstract ChessGamePiece getEnemyPiece(ChessGameBoard board, int row, int col);
+
+        //public class WhiteChessPiece extends ChessPiece {
+            //protected ChessGamePiece getEnemyPiece(ChessGameBoard board, int row, int col) {
+                //return board.getCell(row, col).getPieceOnSquare();
+            //}
+
+            //public int getColorOfPiece() {
+                //return ChessGamePiece.WHITE;
+            //}
+
+
         //}
+
+        //public class BlackChessPiece extends ChessPiece {
+            //protected ChessGamePiece getEnemyPiece(ChessGameBoard board, int row, int col) {
+                //return board.getCell(row, col).getPieceOnSquare();
+            //}
+
+            //public int getColorOfPiece() {
+                //return ChessGamePiece.BLACK;
+            //}
+
+        //}
+
+    public interface EnemyPieceChecker {
+        boolean isEnemy(ChessGamePiece currentPiece, ChessGamePiece enemyPiece);
     }
 
-    protected abstract ChessGamePiece getEnemyPiece(ChessGameBoard board, int row, int col);
-
-    public class WhiteChessPiece extends ChessGamePiece {
-        protected ChessGamePiece getEnemyPiece(ChessGameBoard board, int row, int col) {
-            return board.getCell(row, col).getPieceOnSquare();
-        }
-
-        public int getColorOfPiece() {
-            return ChessGamePiece.WHITE;
+    public class WhiteEnemyPieceChecker implements EnemyPieceChecker {
+        @Override
+        public boolean isEnemy(ChessGamePiece currentPiece, ChessGamePiece enemyPiece) {
+            return enemyPiece.getColorOfPiece() == ChessGamePiece.BLACK;
         }
     }
 
-    public class BlackChessPiece extends ChessGamePiece {
-        protected ChessGamePiece getEnemyPiece(ChessGameBoard board, int row, int col) {
-            return board.getCell(row, col).getPieceOnSquare();
-        }
-
-        public int getColorOfPiece() {
-            return ChessGamePiece.BLACK;
+    public class BlackEnemyPieceChecker implements EnemyPieceChecker {
+        @Override
+        public boolean isEnemy(ChessGamePiece currentPiece, ChessGamePiece enemyPiece) {
+            return enemyPiece.getColorOfPiece() == ChessGamePiece.WHITE;
         }
     }
-
     // ----------------------------------------------------------
     /**
      * Gets a list of GamePieces that can currently attack this game piece.
