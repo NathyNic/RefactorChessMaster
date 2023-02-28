@@ -736,31 +736,6 @@ public abstract class ChessGamePiece{
             //}
         }
 
-        //protected abstract ChessGamePiece getEnemyPiece(ChessGameBoard board, int row, int col);
-
-        //public class WhiteChessPiece extends ChessPiece {
-            //protected ChessGamePiece getEnemyPiece(ChessGameBoard board, int row, int col) {
-                //return board.getCell(row, col).getPieceOnSquare();
-            //}
-
-            //public int getColorOfPiece() {
-                //return ChessGamePiece.WHITE;
-            //}
-
-
-        //}
-
-        //public class BlackChessPiece extends ChessPiece {
-            //protected ChessGamePiece getEnemyPiece(ChessGameBoard board, int row, int col) {
-                //return board.getCell(row, col).getPieceOnSquare();
-            //}
-
-            //public int getColorOfPiece() {
-                //return ChessGamePiece.BLACK;
-            //}
-
-        //}
-
     public interface EnemyPieceChecker {
         boolean isEnemy(ChessGamePiece currentPiece, ChessGamePiece enemyPiece);
     }
