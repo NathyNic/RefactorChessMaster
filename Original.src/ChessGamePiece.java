@@ -389,51 +389,21 @@ public abstract class ChessGamePiece{
     protected ArrayList<String> calculateSouthWestMoves(ChessGameBoard board, int numMoves) {
         ArrayList<String> moves = new ArrayList<String>();
 
-        if (!isPieceOnScreen()) {
+        if (!isPieceOnScreen() || numMoves == 0) {
             return moves;
         }
 
-        for (int i = 1; i < 8; i++) {
-            int newRow = pieceRow + i;
-            int newCol = pieceColumn - i;
+        int newRow = pieceRow + 1;
+        int newCol = pieceColumn - 1;
 
-            if (!isOnScreen(newRow, newCol)) {
-                break;
-            }
-
+        if (isOnScreen(newRow, newCol)) {
             if (addMoveIfPossible(board, moves, newRow, newCol)) {
-                numMoves--;
-                if (numMoves == 0) {
-                    break;
-                }
+                ArrayList<String> nextMoves = calculateSouthWestMoves(board, numMoves - 1);
+                moves.addAll(nextMoves);
             }
         }
 
         return moves;
-        /*ChessGameBoard board,
-        int numMoves ){
-        ArrayList<String> moves = new ArrayList<String>();
-        int count = 0;
-        if ( isPieceOnScreen() ){
-            for ( int i = 1; i < 8 && count < numMoves; i++ ){
-                if ( isOnScreen( pieceRow + i, pieceColumn - i )
-                    && ( board.getCell( pieceRow + i,
-                        pieceColumn - i ).getPieceOnSquare() == null ) ){
-                    moves.add( ( pieceRow + i ) + "," + ( pieceColumn - i ) );
-                    count++;
-                }
-                else if ( isEnemy( board, pieceRow + i, pieceColumn - i ) ){
-                    moves.add( ( pieceRow + i ) + "," + ( pieceColumn - i ) );
-                    count++;
-                    break;
-                }
-                else
-                {
-                    break;
-                }
-            }
-        }
-        return moves;*/
     }
     // ----------------------------------------------------------
     /**
