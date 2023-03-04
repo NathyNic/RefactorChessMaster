@@ -389,18 +389,24 @@ public abstract class ChessGamePiece{
     protected ArrayList<String> calculateSouthWestMoves(ChessGameBoard board, int numMoves) {
         ArrayList<String> moves = new ArrayList<String>();
 
-        if (!isPieceOnScreen() || numMoves == 0) {
+        if (!isPieceOnScreen()) {
             return moves;
         }
 
+        // Calcular los movimientos en la dirección suroeste
         int newRow = pieceRow + 1;
         int newCol = pieceColumn - 1;
-
-        if (isOnScreen(newRow, newCol)) {
-            if (addMoveIfPossible(board, moves, newRow, newCol)) {
-                ArrayList<String> nextMoves = calculateSouthWestMoves(board, numMoves - 1);
-                moves.addAll(nextMoves);
+        while (isOnScreen(newRow, newCol)) {
+            if (!addMoveIfPossible(board, moves, newRow, newCol)) {
+                break;
             }
+            newRow++;
+            newCol--;
+        }
+
+        /*Limitar el número de movimientos al número especificado por numMoves*/
+        if (moves.size() > numMoves) {
+            moves.subList(numMoves, moves.size()).clear();
         }
 
         return moves;
