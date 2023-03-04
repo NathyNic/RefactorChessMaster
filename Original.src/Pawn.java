@@ -97,7 +97,7 @@ public class Pawn
                 count++;
             }
             // check for enemy capture points
-            if ( getColorOfPiece() == ChessGamePiece.WHITE ){
+            /*if ( getColorOfPiece() == ChessGamePiece.WHITE ){
                 if ( isEnemy( board, pieceRow - 1, pieceColumn - 1 ) ){
                     moves.add( ( pieceRow - 1 ) + "," + ( pieceColumn - 1 ) );
                 }
@@ -113,6 +113,13 @@ public class Pawn
                 if ( isEnemy( board, pieceRow + 1, pieceColumn + 1 ) ){
                     moves.add( ( pieceRow + 1 ) + "," + ( pieceColumn + 1 ) );
                 }
+            }*/
+            int direction = getColorOfPiece() == ChessGamePiece.WHITE ? -1 : 1;
+            if (isEnemy(board, pieceRow + direction, pieceColumn - 1)) {
+                moves.add((pieceRow + direction) + "," + (pieceColumn - 1));
+            }
+            if (isEnemy(board, pieceRow + direction, pieceColumn + 1)) {
+                moves.add((pieceRow + direction) + "," + (pieceColumn + 1));
             }
         }
         return moves;
