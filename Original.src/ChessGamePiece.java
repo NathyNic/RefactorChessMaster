@@ -386,17 +386,14 @@ public abstract class ChessGamePiece{
      *            the number of moves to calculate
      * @return ArrayList<String> the moves in this direction
      */
-    protected ArrayList<String> calculateSouthWestMoves(
-            ChessGameBoard board,
-            int numMoves) {
+    protected ArrayList<String> calculateSouthWestMoves(ChessGameBoard board, int numMoves) {
         ArrayList<String> moves = new ArrayList<String>();
 
         if (!isPieceOnScreen()) {
             return moves;
         }
 
-        int count = 0;
-        for (int i = 1; i < 8 && count < numMoves; i++) {
+        for (int i = 1; i < 8; i++) {
             int newRow = pieceRow + i;
             int newCol = pieceColumn - i;
 
@@ -405,9 +402,10 @@ public abstract class ChessGamePiece{
             }
 
             if (addMoveIfPossible(board, moves, newRow, newCol)) {
-                count++;
-            } else {
-                break;
+                numMoves--;
+                if (numMoves == 0) {
+                    break;
+                }
             }
         }
 
