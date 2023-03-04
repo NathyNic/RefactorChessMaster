@@ -45,20 +45,24 @@ public class Pawn
      */
     @Override
     public boolean move( ChessGameBoard board, int row, int col ){
-        if ( super.move( board, row, col ) ){
-            notMoved = false;
-            possibleMoves = calculatePossibleMoves( board );
-            if ( ( getColorOfPiece() == ChessGamePiece.BLACK && row == 7 )
-                || ( getColorOfPiece() == ChessGamePiece.WHITE && row == 0 ) ){ // pawn has reached the end of the board, promote it to queen
-                board.getCell( row, col ).setPieceOnSquare( new Queen(
-                    board,
-                    row,
-                    col,
-                    getColorOfPiece() ) );
-            }
-            return true;
+        if (!super.move(board, row, col)) {
+            return false;
         }
-        return false;
+        notMoved = false;
+        possibleMoves = calculatePossibleMoves(board);
+        if (shouldPromotePawn(row)) {
+            promotePawnToQueen(board, row, col);
+        }
+        return true;
+    }
+
+    private boolean shouldPromotePawn(int row) {
+        int color = getColorOfPiece();
+        return (color == ChessGamePiece.BLACK && row == 7) || (color == ChessGamePiece.WHITE && row == 0);
+    }
+
+    private void promotePawnToQueen(ChessGameBoard board, int row, int col) {
+        board.getCell(row, col).setPieceOnSquare(new Queen(board, row, col, getColorOfPiece()));
     }
     /**
      * Calculates the possible moves for this piece. These are ALL the possible
@@ -97,23 +101,6 @@ public class Pawn
                 count++;
             }
             // check for enemy capture points
-            /*if ( getColorOfPiece() == ChessGamePiece.WHITE ){
-                if ( isEnemy( board, pieceRow - 1, pieceColumn - 1 ) ){
-                    moves.add( ( pieceRow - 1 ) + "," + ( pieceColumn - 1 ) );
-                }
-                if ( isEnemy( board, pieceRow - 1, pieceColumn + 1 ) ){
-                    moves.add( ( pieceRow - 1 ) + "," + ( pieceColumn + 1 ) );
-                }
-            }
-            else
-            {
-                if ( isEnemy( board, pieceRow + 1, pieceColumn - 1 ) ){
-                    moves.add( ( pieceRow + 1 ) + "," + ( pieceColumn - 1 ) );
-                }
-                if ( isEnemy( board, pieceRow + 1, pieceColumn + 1 ) ){
-                    moves.add( ( pieceRow + 1 ) + "," + ( pieceColumn + 1 ) );
-                }
-            }*/
             int direction = getColorOfPiece() == ChessGamePiece.WHITE ? -1 : 1;
             if (isEnemy(board, pieceRow + direction, pieceColumn - 1)) {
                 moves.add((pieceRow + direction) + "," + (pieceColumn - 1));
