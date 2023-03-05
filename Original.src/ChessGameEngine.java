@@ -245,7 +245,66 @@ public class ChessGameEngine{
      * @param e
      *            the mouse event from the listener
      */
-    public void determineActionFromSquareClick( MouseEvent e ){
+    public void determineActionFromSquareClick(MouseEvent e) {
+        BoardSquare squareClicked = (BoardSquare) e.getSource();
+        ChessGamePiece pieceOnSquare = squareClicked.getPieceOnSquare();
+        board.clearColorsOnBoard();
+
+        if (firstClick) {
+            handleFirstClick(squareClicked, pieceOnSquare);
+        } else {
+            handleSecondClick(squareClicked, pieceOnSquare);
+        }
+    }
+
+    private void handleFirstClick(BoardSquare squareClicked, ChessGamePiece pieceOnSquare) {
+        currentPiece = pieceOnSquare;
+
+        if (selectedPieceIsValid()) {
+            currentPiece.showLegalMoves(board);
+            squareClicked.setBackground(Color.GREEN);
+            firstClick = false;
+        } else {
+            showInvalidSelectionMessage(squareClicked, pieceOnSquare);
+        }
+    }
+
+    private void handleSecondClick(BoardSquare squareClicked, ChessGamePiece pieceOnSquare) {
+        if (pieceOnSquare == null || !pieceOnSquare.equals(currentPiece)) {
+            boolean moveSuccessful = currentPiece.move(board, squareClicked.getRow(), squareClicked.getColumn());
+
+            if (moveSuccessful) {
+                checkGameConditions();
+            } else {
+                showInvalidMoveMessage(squareClicked);
+            }
+
+            firstClick = true;
+        } else {
+            firstClick = true;
+        }
+    }
+
+    private void showInvalidSelectionMessage(BoardSquare squareClicked, ChessGamePiece pieceOnSquare) {
+        String message;
+
+        if (currentPiece != null) {
+            message = "You tried to pick up the other player's piece! Get some glasses and pick a valid square.";
+        } else {
+            message = "You tried to pick up an empty square! Get some glasses and pick a valid square.";
+        }
+
+        JOptionPane.showMessageDialog(squareClicked, message, "Illegal move", JOptionPane.ERROR_MESSAGE);
+    }
+
+    private void showInvalidMoveMessage(BoardSquare squareClicked) {
+        int row = squareClicked.getRow();
+        int col = squareClicked.getColumn();
+        String message = "The move to row " + (row + 1) + " and column " + (col + 1) + " is either not valid or not legal for this piece. Choose another move location, and try using your brain this time!";
+
+        JOptionPane.showMessageDialog(squareClicked, message, "Invalid move", JOptionPane.ERROR_MESSAGE);
+    }
+    /*public void determineActionFromSquareClick( MouseEvent e ){
         BoardSquare squareClicked = (BoardSquare) e.getSource();
         ChessGamePiece pieceOnSquare = squareClicked.getPieceOnSquare();
         board.clearColorsOnBoard();
@@ -278,7 +337,7 @@ public class ChessGameEngine{
                 JOptionPane.showMessageDialog(squareClicked, message, "Invalid move", JOptionPane.ERROR_MESSAGE);
             }
             firstClick = true;
-        }
+        }*/
         /*BoardSquare squareClicked = (BoardSquare)e.getSource();
         ChessGamePiece pieceOnSquare = squareClicked.getPieceOnSquare();
         board.clearColorsOnBoard();
@@ -345,5 +404,5 @@ public class ChessGameEngine{
                 firstClick = true;
             }
         }*/
-    }
+    //}
 }
