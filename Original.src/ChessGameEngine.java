@@ -246,7 +246,40 @@ public class ChessGameEngine{
      *            the mouse event from the listener
      */
     public void determineActionFromSquareClick( MouseEvent e ){
-        BoardSquare squareClicked = (BoardSquare)e.getSource();
+        BoardSquare squareClicked = (BoardSquare) e.getSource();
+        ChessGamePiece pieceOnSquare = squareClicked.getPieceOnSquare();
+        board.clearColorsOnBoard();
+        if (firstClick) {
+            currentPiece = squareClicked.getPieceOnSquare();
+            if (selectedPieceIsValid()) {
+                currentPiece.showLegalMoves(board);
+                squareClicked.setBackground(Color.GREEN);
+            } else {
+                String message = "You tried to pick up an empty square!";
+                if (currentPiece != null) {
+                    message = "You tried to pick up the other player's piece!";
+                }
+                JOptionPane.showMessageDialog(squareClicked, message + " Get some glasses and pick a valid square.", "Illegal move", JOptionPane.ERROR_MESSAGE);
+            }
+            firstClick = false;
+        } else {
+            boolean moveSuccessful = false;
+            if (pieceOnSquare == null || !pieceOnSquare.equals(currentPiece)) {
+                moveSuccessful = currentPiece.move(board, squareClicked.getRow(), squareClicked.getColumn());
+            }
+            if (moveSuccessful) {
+                checkGameConditions();
+            } else if (pieceOnSquare != null && pieceOnSquare.equals(currentPiece)) {
+                firstClick = true;
+            } else {
+                int row = squareClicked.getRow();
+                int col = squareClicked.getColumn();
+                String message = "The move to row " + (row + 1) + " and column " + (col + 1) + " is either not valid or not legal for this piece. Choose another move location, and try using your brain this time!";
+                JOptionPane.showMessageDialog(squareClicked, message, "Invalid move", JOptionPane.ERROR_MESSAGE);
+            }
+            firstClick = true;
+        }
+        /*BoardSquare squareClicked = (BoardSquare)e.getSource();
         ChessGamePiece pieceOnSquare = squareClicked.getPieceOnSquare();
         board.clearColorsOnBoard();
         if ( firstClick ){
@@ -311,6 +344,6 @@ public class ChessGameEngine{
             {
                 firstClick = true;
             }
-        }
+        }*/
     }
 }
