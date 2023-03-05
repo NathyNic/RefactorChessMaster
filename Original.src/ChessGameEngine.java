@@ -117,25 +117,6 @@ public class ChessGameEngine{
         }
 
         return isValid;
-        /*if ( currentPiece == null ) // user tried to select an empty square
-        {
-            return false;
-        }
-        if ( currentPlayer == 2 ) // black player
-        {
-            if ( currentPiece.getColorOfPiece() == ChessGamePiece.BLACK ){
-                return true;
-            }
-            return false;
-        }
-        else
-        // white player
-        {
-            if ( currentPiece.getColorOfPiece() == ChessGamePiece.WHITE ){
-                return true;
-            }
-            return false;
-        }*/
     }
     /**
      * Determines if the requested King is in check.
