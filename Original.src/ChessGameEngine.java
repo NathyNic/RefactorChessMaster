@@ -127,19 +127,9 @@ public class ChessGameEngine{
      * @return true if the king is in check, false otherwise
      */
     public boolean isKingInCheck( boolean checkCurrent ){
-        if ( checkCurrent ){
-            if ( currentPlayer == 1 ){
-                return king1.isChecked( board );
-            }
-            return king2.isChecked( board );
-        }
-        else
-        {
-            if ( currentPlayer == 2 ){
-                return king1.isChecked( board );
-            }
-            return king2.isChecked( board );
-        }
+        boolean isPlayer1 = (currentPlayer == 1);
+        boolean checkKing1 = (checkCurrent == isPlayer1);
+        return checkKing1 ? king1.isChecked(board) : king2.isChecked(board);
     }
     /**
      * Asks the user if they want to play again - if they don't, the game exits.
@@ -175,34 +165,6 @@ public class ChessGameEngine{
         }
         currentPlayer = origPlayer;
         nextTurn();
-        /*int origPlayer = currentPlayer;
-        for ( int i = 0; i < 2; i++ ){
-            int gameLostRetVal = determineGameLost();
-            if ( gameLostRetVal < 0 ){
-                askUserToPlayAgain( "Game over - STALEMATE. You should both go"
-                    + " cry in a corner!" );
-                return;
-            }
-            else if ( gameLostRetVal > 0 ){
-                askUserToPlayAgain( "Game over - CHECKMATE. " + "Player "
-                    + gameLostRetVal + " loses and should go"
-                    + " cry in a corner!" );
-                return;
-            }
-            else if ( isKingInCheck( true ) ){
-                JOptionPane.showMessageDialog(
-                    board.getParent(),
-                    "Be careful player " + currentPlayer + ", " +
-                    "your king is in check! Your next move must get " +
-                    "him out of check or you're screwed.",
-                    "Warning",
-                    JOptionPane.WARNING_MESSAGE );
-            }
-            currentPlayer = currentPlayer == 1 ? 2 : 1;
-            // check the next player's conditions as well.
-        }
-        currentPlayer = origPlayer;
-        nextTurn();*/
     }
     private GameResult determineGameResult() {
         int gameLostRetVal = determineGameLost();

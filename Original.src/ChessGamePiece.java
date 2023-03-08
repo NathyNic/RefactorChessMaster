@@ -754,46 +754,20 @@ public abstract class ChessGamePiece{
             enemyPieceChecker = new BlackEnemyPieceChecker();
         }
         return enemyPieceChecker.isEnemy(this, enemyPiece);
-
-
-            //if ( enemyPiece == null
-            //|| this.getColorOfPiece() == ChessGamePiece.UNASSIGNED
-            //|| enemyPiece.getColorOfPiece() == ChessGamePiece.UNASSIGNED ){
-            //return false;
-            //}
-            //if ( this.getColorOfPiece() == ChessGamePiece.WHITE ){
-            //if ( enemyPiece.getColorOfPiece() == ChessGamePiece.BLACK ){
-            //return true;
-            //}
-            //else
-            //{
-            //return false;
-            //}
-            //}
-            //else
-            //{
-            //if ( enemyPiece.getColorOfPiece() == ChessGamePiece.WHITE ){
-            //return true;
-            //}
-            //else
-            //{
-            //return false;
-            //}
-            //}
         }
 
     public interface EnemyPieceChecker {
         boolean isEnemy(ChessGamePiece currentPiece, ChessGamePiece enemyPiece);
     }
 
-    public class WhiteEnemyPieceChecker implements EnemyPieceChecker {
+    public static class WhiteEnemyPieceChecker implements EnemyPieceChecker {
         @Override
         public boolean isEnemy(ChessGamePiece currentPiece, ChessGamePiece enemyPiece) {
             return enemyPiece.getColorOfPiece() == ChessGamePiece.BLACK;
         }
     }
 
-    public class BlackEnemyPieceChecker implements EnemyPieceChecker {
+    public static class BlackEnemyPieceChecker implements EnemyPieceChecker {
         @Override
         public boolean isEnemy(ChessGamePiece currentPiece, ChessGamePiece enemyPiece) {
             return enemyPiece.getColorOfPiece() == ChessGamePiece.WHITE;
